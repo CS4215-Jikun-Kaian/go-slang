@@ -9,6 +9,9 @@ export class Heap {
     if (sizeInBytes < 12) {
       throw new Error('The heap size must be at least 12 bytes.');
     }
+    if (sizeInBytes % 4 !== 0) {
+      throw new Error('The heap size must be a multiple of 4.');
+    }
 
     this.heap = new MemoryRegion(sizeInBytes);
     this.sizeInBytes = sizeInBytes;
