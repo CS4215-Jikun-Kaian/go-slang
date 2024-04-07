@@ -44,6 +44,11 @@ export class Heap {
         } else {
           this.heap.setInt32(currentBlock, nextBlock);
         }
+
+        // Zeros the memory
+        for (let i = addr + 4; i < addr + alignedSize; i += 4) {
+          this.heap.setInt32(i, 0);
+        }
         return addr + 4;
       }
       currentBlock = addr + 4;
