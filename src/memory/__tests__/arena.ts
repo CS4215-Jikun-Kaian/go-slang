@@ -1,20 +1,20 @@
-import { Heap } from '../heap';
+import { Arena } from '../arena';
 
 describe('heap', () => {
   test('returns addresses when there is enough space', () => {
-    const heap = new Heap(12);
+    const heap = new Arena(4, 8);
     expect(heap.allocate(4)).toBe(8);
     expect(heap.allocate(4)).toBe(-1);
   });
 
   test('returns -1 when there is not enough space', () => {
-    const heap = new Heap(12);
+    const heap = new Arena(4, 8);
     expect(heap.allocate(4)).toBe(8);
     expect(heap.allocate(4)).toBe(-1);
   });
 
   test('frees space when passed a valid address', () => {
-    const heap = new Heap(20);
+    const heap = new Arena(4, 16);
     expect(heap.allocate(4)).toBe(8);
     expect(heap.allocate(4)).toBe(16);
     expect(heap.allocate(4)).toBe(-1);
@@ -28,7 +28,7 @@ describe('heap', () => {
   });
 
   test('returns -1 if the available free space is fragmented', () => {
-    const heap = new Heap(800);
+    const heap = new Arena(4, 800);
     expect(heap.allocate(500)).toBe(8);
     expect(heap.allocate(200)).toBe(512);
     heap.free(8);
@@ -38,7 +38,7 @@ describe('heap', () => {
   });
 
   test('returns address if fragmented free space is merged', () => {
-    const heap = new Heap(52);
+    const heap = new Arena(4, 48);
     expect(heap.allocate(4)).toBe(8);
     expect(heap.allocate(4)).toBe(16);
     expect(heap.allocate(4)).toBe(24);

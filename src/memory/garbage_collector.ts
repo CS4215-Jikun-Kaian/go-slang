@@ -1,14 +1,15 @@
-import { Heap } from './heap';
+import { Arena } from './arena';
 
-export class GarbageCollectedHeap extends Heap {
+export class GarbageCollectedHeap extends Arena {
 
   private readonly sizeInBytes: number;
   private allocatedList: number;
 
   public constructor(sizeInBytes: number) {
-    super(sizeInBytes);
+    super(8, sizeInBytes);
     this.sizeInBytes = sizeInBytes;
-    this.allocatedList = this.allocate(4);
+    this.allocatedList = 4;
+    this.setInt32(this.allocatedList, -1);
   }
 
   public allocateNode(sizeOfData: number, numberOfChildren: number): number {
@@ -52,6 +53,17 @@ export class GarbageCollectedHeap extends Heap {
   }
 
   public sweep() {
+
+    while (this.getInt32(this.allocatedList) !== -1) {
+      const node = this.getInt32(this.allocatedList);
+      const nextNode = this.getInt32(node + 4);
+      if (this.getInt32(node) < 0) {
+        this.setInt32(node, -this.getInt32(node));
+      } else {
+        this.free(node);
+      }
+      this.setInt32(this.allocatedList, nextNode);
+    }
     // TODO
   }
 }

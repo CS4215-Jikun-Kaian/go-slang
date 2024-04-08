@@ -1,21 +1,27 @@
 import { MemoryRegion } from './memory_region';
 
-export class Heap extends MemoryRegion {
+export class Arena extends MemoryRegion {
 
 
-  public constructor(sizeInBytes: number) {
-    if (sizeInBytes < 12) {
-      throw new Error('The heap size must be at least 12 bytes.');
+  public constructor(fixed_region: number, allocated_region: number) {
+    if (fixed_region % 4 !== 0) {
+      throw new Error('The fixed region must be a multiple of 4.');
     }
-    if (sizeInBytes % 4 !== 0) {
-      throw new Error('The heap size must be a multiple of 4.');
+    if (fixed_region < 4) {
+      throw new Error('The fixed region must be at least 4 bytes.');
     }
-    super(sizeInBytes);
+    if (allocated_region < 8) {
+      throw new Error('The allocation region must be at least 8 bytes.');
+    }
+    if (allocated_region % 4 !== 0) {
+      throw new Error('The allocation region size must be a multiple of 4.');
+    }
+    super(fixed_region + allocated_region);
 
     // Freelist
-    this.setInt32(0, 4);
-    this.setInt32(4, sizeInBytes - 4);
-    this.setInt32(8, -1);
+    this.setInt32(0, fixed_region);
+    this.setInt32(fixed_region, allocated_region);
+    this.setInt32(fixed_region + 4, -1);
   }
 
   public allocate(sizeInBytes: number): number {
