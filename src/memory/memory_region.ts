@@ -4,7 +4,7 @@
 export class MemoryRegion {
 
   private readonly dataView: DataView;
-  private readonly size: number;
+  protected readonly size: number;
 
   public constructor(size: number) {
     const buffer = new ArrayBuffer(size);
