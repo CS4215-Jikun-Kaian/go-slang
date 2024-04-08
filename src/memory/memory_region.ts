@@ -100,5 +100,10 @@ export class MemoryRegion {
     return this.dataView.getFloat64(address);
   }
 
+  public debug(): void {
+    for (let i = 0; i < this.size; i += 4) {
+      console.log(`${i}: ${this.getInt32(i)}`);
+    }
+  }
 }
 
