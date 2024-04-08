@@ -1,97 +1,79 @@
-import { MemoryRegion } from './memory_region';
+import { Heap } from './heap';
 
-export class Arena extends MemoryRegion {
+export class Arena extends Heap {
 
+  private readonly sizeInBytes: number;
+  private readonly allocatedList = 4;
 
-  public constructor(fixed_region: number, allocated_region: number) {
-    if (fixed_region % 4 !== 0) {
-      throw new Error('The fixed region must be a multiple of 4.');
-    }
-    if (fixed_region < 4) {
-      throw new Error('The fixed region must be at least 4 bytes.');
-    }
-    if (allocated_region < 8) {
-      throw new Error('The allocation region must be at least 8 bytes.');
-    }
-    if (allocated_region % 4 !== 0) {
-      throw new Error('The allocation region size must be a multiple of 4.');
-    }
-    super(fixed_region + allocated_region);
-
-    // Freelist
-    this.setInt32(0, fixed_region);
-    this.setInt32(fixed_region, allocated_region);
-    this.setInt32(fixed_region + 4, -1);
+  public constructor(sizeInBytes: number) {
+    super(8, sizeInBytes - 8);
+    this.sizeInBytes = sizeInBytes;
+    this.setInt32(this.allocatedList, -1);
   }
 
-  public allocate(sizeInBytes: number): number {
-
-    if (sizeInBytes <= 0) {
-      throw new Error('The size must be greater than zero.');
-    }
-
-    const alignedSize = Math.ceil(sizeInBytes / 4) * 4 + 4;
-    let currentBlock = 0;
-
-    while (this.getInt32(currentBlock) !== -1) {
-      const addr = this.getInt32(currentBlock);
-      const blockSize = this.getInt32(addr);
-      const nextBlock = this.getInt32(addr + 4);
-
-      if (blockSize >= alignedSize) {
-        const remainingBlockSize = blockSize - alignedSize;
-
-        if (remainingBlockSize >= 8) {
-          this.setUint32(addr, alignedSize);
-          this.setUint32(addr + alignedSize, remainingBlockSize);
-          this.setInt32(addr + alignedSize + 4, nextBlock);
-          this.setInt32(currentBlock, addr + alignedSize);
-        } else {
-          this.setInt32(currentBlock, nextBlock);
-        }
-
-        // Zeros the memory
-        for (let i = addr + 4; i < addr + alignedSize; i += 4) {
-          this.setInt32(i, 0);
-        }
-        return addr + 4;
+  public allocateNode(numberOfChildren: number, sizeOfData: number): number {
+    const size = 4 + 4 * numberOfChildren + sizeOfData;
+    const addr = this.allocate(size);
+    const newNode = this.allocate(8);
+    if (addr === -1 || newNode === -1) {
+      if (newNode !== -1) {
+        this.free(newNode);
       }
-      currentBlock = addr + 4;
+      if (addr !== -1) {
+        this.free(addr);
+      }
+      return -1;
     }
-
-    return -1;
+    this.setInt32(addr, numberOfChildren);
+    for (let i = 0; i < numberOfChildren; i++) {
+      this.setInt32(addr + 4 + 4 * i, -1);
+    }
+    this.setInt32(newNode, addr);
+    this.setInt32(newNode + 4, this.getInt32(4));
+    this.setInt32(4, newNode);
+    return addr;
   }
 
-  public free(addr: number): void {
-    addr -= 4;
-    let prevBlock = 0;
-    let next = this.getInt32(prevBlock);
-
-    while (next < addr && next !== -1) {
-      prevBlock = next+4;
-      next = this.getInt32(prevBlock);
-    }
-
-
-    if (prevBlock != 0 && this.getInt32(prevBlock - 4) + prevBlock - 4 === addr) {
-      this.setUint32(prevBlock - 4, this.getUint32(prevBlock-4) + this.getUint32(addr));
-      addr = prevBlock - 4;
-    } else {
-      this.setInt32(prevBlock, addr);
-    }
-
-    if (addr + this.getInt32(addr) === next) {
-      this.setUint32(addr, this.getUint32(addr) + this.getUint32(next));
-      this.setInt32(addr + 4, this.getInt32(next + 4));
-    } else {
-      this.setInt32(addr + 4, next);
-    }
-
+  public setChild(addr: number, index: number, child: number): void {
+    this.setInt32(addr + 4 + 4 * index, child);
   }
 
-  public debug(): void {
-    for (let i = 0; i < this.size; i += 4) {
-      console.log(`${i}: ${this.getInt32(i)}`);
+  public getChild(addr: number, index: number): number {
+    return this.getInt32(addr + 4 + 4 * index);
+  }
+
+  public getNumberofChildren(addr: number): number {
+    return this.getUint32(addr) & 0x7FFFFFFF;
+  }
+
+  public getData(addr: number): number {
+    return addr + 4 + 4 * this.getUint32(addr);
+  }
+
+  public mark(addr: number) {
+    const numberOfChildren = this.getNumberofChildren(addr);
+    this.setUint32(addr, numberOfChildren | 0x80000000);
+    for (let i = 0; i < numberOfChildren; i++) {
+      const child = this.getChild(addr, i);
+      if (child !== -1) {
+        this.mark(child);
+      }
+    }
+  }
+
+  public sweep() {
+    let prev = this.allocatedList;
+    while (this.getInt32(prev) !== -1) {
+      const node = this.getInt32(prev);
+      if (this.getUint32(this.getInt32(node)) & 0x80000000) {
+        this.setInt32(this.getInt32(node), this.getUint32(this.getInt32(node)) & 0x7FFFFFFF);
+        prev = node + 4;
+      } else {
+        const nextNode = this.getInt32(node + 4);
+        this.free(this.getInt32(node));
+        this.free(node);
+        this.setInt32(prev, nextNode);
+      }
     }
   }
 }
