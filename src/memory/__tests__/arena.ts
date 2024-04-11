@@ -4,7 +4,9 @@ describe('arena', () => {
   test('successfully allocates after garbage collection', () => {
     const arena = new Arena(8, 24);
     expect(arena.allocateNode(0, 4)).toBe(12);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
     arena.sweep();
     expect(arena.allocateNode(0, 4)).toBe(12);
   });
@@ -13,15 +15,21 @@ describe('arena', () => {
     const arena = new Arena(8, 48);
     expect(arena.allocateNode(0, 4)).toBe(12);
     expect(arena.allocateNode(0, 4)).toBe(36);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
     arena.mark(12);
     arena.sweep();
     expect(arena.allocateNode(0, 4)).toBe(36);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
     arena.mark(36);
     arena.sweep();
     expect(arena.allocateNode(0, 4)).toBe(12);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
   });
 
   test('children of marked nodes will also be marked', () => {
@@ -32,7 +40,9 @@ describe('arena', () => {
     arena.setChild(36, 0, 64);
     expect(arena.allocateNode(0, 4)).toBe(92);
     arena.setChild(64, 0, 92);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
     arena.mark(36);
     arena.sweep();
     expect(arena.allocateNode(0, 4)).toBe(12);
@@ -46,7 +56,9 @@ describe('arena', () => {
     arena.setChild(36, 0, 64);
     expect(arena.allocateNode(0, 4)).toBe(92);
     arena.setChild(64, 0, 92);
-    expect(arena.allocateNode(0, 4)).toBe(-1);
+    expect(() => {
+      arena.allocateNode(0, 4);
+    }).toThrow();
     arena.mark(12);
     arena.sweep();
     expect(arena.allocateNode(1, 4)).toBe(36);
