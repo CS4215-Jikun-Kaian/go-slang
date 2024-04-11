@@ -24,7 +24,6 @@ describe('heap', () => {
     heap.free(16);
     expect(heap.allocate(4)).toBe(16);
     expect(heap.allocate(4)).toBe(-1);
-
   });
 
   test('returns -1 if the available free space is fragmented', () => {
@@ -49,4 +48,3 @@ describe('heap', () => {
     expect(heap.allocate(20)).toBe(8);
   });
 });
-

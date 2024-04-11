@@ -1,12 +1,14 @@
 import { Heap } from './heap';
 
 export class Arena extends Heap {
-
   private readonly sizeInBytes: number;
   private readonly allocatedList = 4;
 
-  public constructor(sizeInBytes: number) {
-    super(8, sizeInBytes - 8);
+  public constructor(fixed_region: number, sizeInBytes: number) {
+    if (fixed_region < 8) {
+      throw new Error('The fixed region for arena must be at least 8 bytes.');
+    }
+    super(fixed_region, sizeInBytes);
     this.sizeInBytes = sizeInBytes;
     this.setInt32(this.allocatedList, -1);
   }
@@ -42,15 +44,19 @@ export class Arena extends Heap {
     return this.getInt32(addr + 4 + 4 * index);
   }
 
-  public getNumberofChildren(addr: number): number {
-    return this.getUint32(addr) & 0x7FFFFFFF;
+  public getChildAddr(addr: number, index: number): number {
+    return addr + 4 + 4 * index;
   }
 
-  public getData(addr: number): number {
+  public getNumberofChildren(addr: number): number {
+    return this.getUint32(addr) & 0x7fffffff;
+  }
+
+  public getDataAddr(addr: number): number {
     return addr + 4 + 4 * this.getUint32(addr);
   }
 
-  public mark(addr: number) {
+  public mark(addr: number): void {
     const numberOfChildren = this.getNumberofChildren(addr);
     this.setUint32(addr, numberOfChildren | 0x80000000);
     for (let i = 0; i < numberOfChildren; i++) {
@@ -61,12 +67,12 @@ export class Arena extends Heap {
     }
   }
 
-  public sweep() {
+  public sweep(): void {
     let prev = this.allocatedList;
     while (this.getInt32(prev) !== -1) {
       const node = this.getInt32(prev);
       if (this.getUint32(this.getInt32(node)) & 0x80000000) {
-        this.setInt32(this.getInt32(node), this.getUint32(this.getInt32(node)) & 0x7FFFFFFF);
+        this.setInt32(this.getInt32(node), this.getUint32(this.getInt32(node)) & 0x7fffffff);
         prev = node + 4;
       } else {
         const nextNode = this.getInt32(node + 4);

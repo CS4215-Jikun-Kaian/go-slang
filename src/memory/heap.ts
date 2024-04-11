@@ -1,31 +1,30 @@
 import { MemoryRegion } from './memory_region';
 
+const FREELIST = 0;
+
 export class Heap extends MemoryRegion {
-
-
   public constructor(fixed_region: number, allocated_region: number) {
     if (fixed_region % 4 !== 0) {
-      throw new Error('The fixed region must be a multiple of 4.');
+      throw new Error('The fixed region for heap must be a multiple of 4.');
     }
     if (fixed_region < 4) {
-      throw new Error('The fixed region must be at least 4 bytes.');
+      throw new Error('The fixed region for heap must be at least 4 bytes.');
     }
     if (allocated_region < 8) {
-      throw new Error('The allocation region must be at least 8 bytes.');
+      throw new Error('The allocation region for heap must be at least 8 bytes.');
     }
     if (allocated_region % 4 !== 0) {
-      throw new Error('The allocation region size must be a multiple of 4.');
+      throw new Error('The allocation region for heap must be a multiple of 4.');
     }
     super(fixed_region + allocated_region);
 
     // Freelist
-    this.setInt32(0, fixed_region);
+    this.setInt32(FREELIST, fixed_region);
     this.setInt32(fixed_region, allocated_region);
     this.setInt32(fixed_region + 4, -1);
   }
 
   public allocate(sizeInBytes: number): number {
-
     if (sizeInBytes <= 0) {
       throw new Error('The size must be greater than zero.');
     }
@@ -59,7 +58,7 @@ export class Heap extends MemoryRegion {
       currentBlock = addr + 4;
     }
 
-    return -1;
+    throw new Error('Out of memory');
   }
 
   public free(addr: number): void {
@@ -68,13 +67,12 @@ export class Heap extends MemoryRegion {
     let next = this.getInt32(prevBlock);
 
     while (next < addr && next !== -1) {
-      prevBlock = next+4;
+      prevBlock = next + 4;
       next = this.getInt32(prevBlock);
     }
 
-
     if (prevBlock != 0 && this.getInt32(prevBlock - 4) + prevBlock - 4 === addr) {
-      this.setUint32(prevBlock - 4, this.getUint32(prevBlock-4) + this.getUint32(addr));
+      this.setUint32(prevBlock - 4, this.getUint32(prevBlock - 4) + this.getUint32(addr));
       addr = prevBlock - 4;
     } else {
       this.setInt32(prevBlock, addr);
@@ -86,6 +84,5 @@ export class Heap extends MemoryRegion {
     } else {
       this.setInt32(addr + 4, next);
     }
-
   }
 }
