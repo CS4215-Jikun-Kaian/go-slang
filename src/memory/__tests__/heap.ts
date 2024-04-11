@@ -4,26 +4,36 @@ describe('heap', () => {
   test('returns addresses when there is enough space', () => {
     const heap = new Heap(4, 8);
     expect(heap.allocate(4)).toBe(8);
-    expect(heap.allocate(4)).toBe(-1);
+    expect(() => {
+      heap.allocate(4);
+    }).toThrow();
   });
 
   test('returns -1 when there is not enough space', () => {
     const heap = new Heap(4, 8);
     expect(heap.allocate(4)).toBe(8);
-    expect(heap.allocate(4)).toBe(-1);
+    expect(() => {
+      heap.allocate(4);
+    }).toThrow();
   });
 
   test('frees space when passed a valid address', () => {
     const heap = new Heap(4, 16);
     expect(heap.allocate(4)).toBe(8);
     expect(heap.allocate(4)).toBe(16);
-    expect(heap.allocate(4)).toBe(-1);
+    expect(() => {
+      heap.allocate(4);
+    }).toThrow();
     heap.free(8);
     expect(heap.allocate(4)).toBe(8);
-    expect(heap.allocate(4)).toBe(-1);
+    expect(() => {
+      heap.allocate(4);
+    }).toThrow();
     heap.free(16);
     expect(heap.allocate(4)).toBe(16);
-    expect(heap.allocate(4)).toBe(-1);
+    expect(() => {
+      heap.allocate(4);
+    }).toThrow();
   });
 
   test('returns -1 if the available free space is fragmented', () => {
@@ -32,7 +42,9 @@ describe('heap', () => {
     expect(heap.allocate(200)).toBe(512);
     heap.free(8);
     expect(heap.allocate(300)).toBe(8);
-    expect(heap.allocate(300)).toBe(-1);
+    expect(() => {
+      heap.allocate(300);
+    }).toThrow();
     expect(heap.allocate(160)).toBe(312);
   });
 
