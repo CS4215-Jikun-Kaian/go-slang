@@ -1,6 +1,7 @@
 import { Arena } from '../memory/arena';
 import { ConstructTag, SelectListRef, PromiseStatus } from './types';
 import { Mutex } from './mutex';
+import { Channel } from './channel';
 
 /**
  * Difference between act and rest
@@ -46,6 +47,10 @@ export class PromiseT {
     switch (this.memory.getUint8(this.memory.getDataAddr(this.addr))) {
       case ConstructTag.mutex:
         return new Mutex(this.memory, this.memory.getChild(this.addr, 0)).act(this.addr);
+      case ConstructTag.channel_read:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_read(this.addr);
+      case ConstructTag.channel_write:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_write(this.addr);
     }
     return false;
   }
@@ -54,6 +59,10 @@ export class PromiseT {
     switch (this.memory.getUint8(this.memory.getDataAddr(this.addr))) {
       case ConstructTag.mutex:
         return new Mutex(this.memory, this.memory.getChild(this.addr, 0)).rest(this.addr);
+      case ConstructTag.channel_read:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).rest_read(this.addr);
+      case ConstructTag.channel_write:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).rest_write(this.addr);
     }
     return false;
   }
@@ -61,7 +70,11 @@ export class PromiseT {
   public cancel(): boolean {
     switch (this.memory.getUint8(this.memory.getDataAddr(this.addr))) {
       case ConstructTag.mutex:
-        return new Mutex(this.memory, this.memory.getChild(this.addr, 0)).cancel(this.memory.getChild(this.addr, 2));
+        return new Mutex(this.memory, this.memory.getChild(this.addr, 0)).cancel(this.addr);
+      case ConstructTag.channel_read:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).cancel_read(this.addr);
+      case ConstructTag.channel_write:
+        return new Channel(this.memory, this.memory.getChild(this.addr, 0)).cancel_write(this.addr);
     }
     return false;
   }
@@ -75,15 +88,15 @@ export class PromiseT {
     // TODO: Add status change event
   }
 
+  public getData(): number {
+    return this.memory.getChild(this.addr, 1);
+  }
+
   public setData(data: number): void {
     this.memory.setChild(this.addr, 1, data);
   }
 
   public setSelectList(selectList: SelectListRef): void {
     this.memory.setChild(this.addr, 3, selectList);
-  }
-
-  public getData(): number {
-    return this.memory.getChild(this.addr, 1);
   }
 }

@@ -6,8 +6,6 @@ import { PromiseRef, MutexRef, ConstructTag, PromiseStatus } from './types';
 export class Mutex {
   public readonly addr: MutexRef;
   public readonly memory: Arena;
-  public static childrenNum: number = 1; // [queue : address]
-  public static dataSize: number = 5; // [locked : boolean]
 
   public constructor(memory: Arena, addr: MutexRef) {
     this.addr = addr;
@@ -70,8 +68,9 @@ export class Mutex {
     return true;
   }
 
-  public cancel(node_addr: PromiseRef): boolean {
+  public cancel(p_addr: PromiseRef): boolean {
     const queue = this.memory.getChild(this.addr, 0);
+    const node_addr = this.memory.getChildAddr(p_addr, 2);
     deleteQueue(this.memory, queue, node_addr);
     return true;
   }
