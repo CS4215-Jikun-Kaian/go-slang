@@ -1,6 +1,7 @@
 export type PromiseRef = number;
 export type MutexRef = number;
 export type ChannelRef = number;
+export type WaitgroupRef = number;
 export type SelectListRef = number;
 
 

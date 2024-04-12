@@ -3,7 +3,7 @@ import { Channel } from '../channel';
 import { PromiseT } from '../promise';
 import { PromiseStatus } from '../types';
 
-describe('mutex', () => {
+describe('channel', () => {
   test('successfully block read and execute write from channel', () => {
     const memory = new Arena(8, 1000);
     const c_addr = Channel.create(memory, 0);

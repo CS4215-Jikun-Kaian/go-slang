@@ -2,6 +2,7 @@ import { Arena } from '../memory/arena';
 import { ConstructTag, SelectListRef, PromiseStatus } from './types';
 import { Mutex } from './mutex';
 import { Channel } from './channel';
+import {Waitgroup} from './waitgroup';
 
 /**
  * Difference between act and rest
@@ -51,6 +52,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_read(this.addr);
       case ConstructTag.channel_write:
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_write(this.addr);
+      case ConstructTag.waitgroup:
+        return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).act(this.addr);
     }
     return false;
   }
@@ -63,6 +66,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).rest_read(this.addr);
       case ConstructTag.channel_write:
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).rest_write(this.addr);
+      case ConstructTag.waitgroup:
+        return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).rest(this.addr);
     }
     return false;
   }
@@ -75,6 +80,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).cancel_read(this.addr);
       case ConstructTag.channel_write:
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).cancel_write(this.addr);
+      case ConstructTag.waitgroup:
+        return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).cancel(this.addr);
     }
     return false;
   }
