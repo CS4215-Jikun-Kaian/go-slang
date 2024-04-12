@@ -1,7 +1,7 @@
 import { Arena } from '../memory/arena';
 import { PromiseT } from './promise';
 import { createQueue, addQueue, deleteQueue, popQueue, isEmptyQueue } from '../utils/queue';
-import { PromiseRef, MutexRef, ConstructTag } from './types';
+import { PromiseRef, MutexRef, ConstructTag, PromiseStatus } from './types';
 
 export class Mutex {
   public readonly addr: MutexRef;
@@ -44,7 +44,7 @@ export class Mutex {
     if (!isEmptyQueue(this.memory, queue)) {
       const p_addr = popQueue(this.memory, queue);
       const p = new PromiseT(p_addr, this.memory);
-      p.setStatus(true);
+      p.setStatus(PromiseStatus.resolved);
     } else if (this.getLocked()) {
       this.setLocked(false);
     }
@@ -56,7 +56,7 @@ export class Mutex {
     } else {
       this.setLocked(true);
       const p = new PromiseT(p_addr, this.memory);
-      p.setStatus(true);
+      p.setStatus(PromiseStatus.resolved);
       return true;
     }
   }
@@ -65,6 +65,8 @@ export class Mutex {
     const queue = this.memory.getChild(this.addr, 0);
     const add = addQueue(this.memory, queue, p_addr);
     this.memory.setChild(p_addr, 2, add);
+    const p = new PromiseT(p_addr, this.memory);
+    p.setStatus(PromiseStatus.rest);
     return true;
   }
 

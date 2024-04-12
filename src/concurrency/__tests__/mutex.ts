@@ -1,6 +1,7 @@
 import { Arena } from '../../memory/arena';
 import { Mutex } from '../mutex';
 import { PromiseT } from '../promise';
+import { PromiseStatus } from '../types';
 
 describe('mutex', () => {
   test('successfully locks a free mutex', () => {
@@ -10,10 +11,10 @@ describe('mutex', () => {
     const p_addr = mutex.lock();
     const p = new PromiseT(p_addr, memory);
 
-    expect(p.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.initialised);
     p.act();
 
-    expect(p.getStatus()).toBe(true);
+    expect(p.getStatus()).toBe(PromiseStatus.resolved);
     expect(mutex.getLocked()).toBe(true);
   });
 
@@ -24,10 +25,10 @@ describe('mutex', () => {
     const p_addr = mutex.lock();
     const p = new PromiseT(p_addr, memory);
 
-    expect(p.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.initialised);
     p.act();
 
-    expect(p.getStatus()).toBe(true);
+    expect(p.getStatus()).toBe(PromiseStatus.resolved);
     expect(mutex.getLocked()).toBe(true);
 
     const p1_addr = mutex.lock();
@@ -35,7 +36,7 @@ describe('mutex', () => {
     p1.act();
 
     expect(mutex.getLocked()).toBe(true);
-    expect(p1.getStatus()).toBe(false);
+    expect(p1.getStatus()).toBe(PromiseStatus.initialised);
   });
 
   test('successfully to releases a locked mutex', () => {
@@ -45,10 +46,10 @@ describe('mutex', () => {
     const p_addr = mutex.lock();
     const p = new PromiseT(p_addr, memory);
 
-    expect(p.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.initialised);
     p.act();
 
-    expect(p.getStatus()).toBe(true);
+    expect(p.getStatus()).toBe(PromiseStatus.resolved);
     expect(mutex.getLocked()).toBe(true);
 
     mutex.release();
@@ -62,20 +63,21 @@ describe('mutex', () => {
     const p_addr = mutex.lock();
     const p = new PromiseT(p_addr, memory);
 
-    expect(p.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.initialised);
     p.act();
 
-    expect(p.getStatus()).toBe(true);
+    expect(p.getStatus()).toBe(PromiseStatus.resolved);
     expect(mutex.getLocked()).toBe(true);
 
     const p1_addr = mutex.lock();
     const p1 = new PromiseT(p1_addr, memory);
     p1.act();
     p1.rest();
+    expect(p1.getStatus()).toBe(PromiseStatus.rest);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(true);
-    expect(p1.getStatus()).toBe(true);
+    expect(p1.getStatus()).toBe(PromiseStatus.resolved);
 
     mutex.release();
   });
@@ -95,7 +97,7 @@ describe('mutex', () => {
     const p4_addr = mutex.lock();
     const p4 = new PromiseT(p4_addr, memory);
 
-    expect(p.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.initialised);
 
     p.act();
     p1.rest();
@@ -103,28 +105,28 @@ describe('mutex', () => {
     p3.rest();
     p4.rest();
 
-    expect(p.getStatus()).toBe(true);
     expect(mutex.getLocked()).toBe(true);
-    expect(p1.getStatus()).toBe(false);
+    expect(p.getStatus()).toBe(PromiseStatus.resolved);
+    expect(p1.getStatus()).toBe(PromiseStatus.rest);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(true);
-    expect(p1.getStatus()).toBe(true);
-    expect(p2.getStatus()).toBe(false);
+    expect(p1.getStatus()).toBe(PromiseStatus.resolved);
+    expect(p2.getStatus()).toBe(PromiseStatus.rest);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(true);
-    expect(p2.getStatus()).toBe(true);
-    expect(p3.getStatus()).toBe(false);
+    expect(p2.getStatus()).toBe(PromiseStatus.resolved);
+    expect(p3.getStatus()).toBe(PromiseStatus.rest);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(true);
-    expect(p3.getStatus()).toBe(true);
-    expect(p4.getStatus()).toBe(false);
+    expect(p3.getStatus()).toBe(PromiseStatus.resolved);
+    expect(p4.getStatus()).toBe(PromiseStatus.rest);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(true);
-    expect(p4.getStatus()).toBe(true);
+    expect(p4.getStatus()).toBe(PromiseStatus.resolved);
 
     mutex.release();
     expect(mutex.getLocked()).toBe(false);

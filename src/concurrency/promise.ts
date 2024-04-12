@@ -1,5 +1,5 @@
 import { Arena } from '../memory/arena';
-import { ConstructTag, SelectListRef } from './types';
+import { ConstructTag, SelectListRef, PromiseStatus } from './types';
 import { Mutex } from './mutex';
 
 /**
@@ -38,7 +38,7 @@ export class PromiseT {
     memory.setChild(addr, 3, 0);
 
     memory.setUint8(memory.getDataAddr(addr), constructTag);
-    memory.setUint8(memory.getDataAddr(addr) + 1, 0);
+    memory.setUint8(memory.getDataAddr(addr) + 1, PromiseStatus.initialised);
     return addr;
   }
 
@@ -66,12 +66,12 @@ export class PromiseT {
     return false;
   }
 
-  public getStatus(): boolean {
-    return this.memory.getUint8(this.memory.getDataAddr(this.addr) + 1) === 1;
+  public getStatus(): PromiseStatus {
+    return this.memory.getUint8(this.memory.getDataAddr(this.addr) + 1);
   }
 
-  public setStatus(status: boolean): void {
-    this.memory.setUint8(this.memory.getDataAddr(this.addr) + 1, status ? 1 : 0);
+  public setStatus(status: PromiseStatus): void {
+    this.memory.setUint8(this.memory.getDataAddr(this.addr) + 1, status);
     // TODO: Add status change event
   }
 

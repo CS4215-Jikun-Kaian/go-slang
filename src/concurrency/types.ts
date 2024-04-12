@@ -3,14 +3,15 @@ export type MutexRef = number;
 export type SelectListRef = number;
 
 export enum PromiseStatus {
-  pending = 0,
-  evaluated = 1,
+  initialised = 0,
+  rest = 1,
   resolved = 2,
 }
 
 export enum ConstructTag {
   mutex = 1,
-  channel = 2,
-  waitgroup = 3,
-  select = 4,
+  read_channel = 2,
+  write_channel = 3,
+  waitgroup = 4,
+  select = 5,
 }
