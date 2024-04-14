@@ -40,13 +40,13 @@ export class Channel {
   public write(data: number): PromiseRef {
     const p_addr = PromiseT.create(this.memory, this.addr, ConstructTag.channel_write);
     const p = new PromiseT(p_addr, this.memory);
-    p.setData(data);
+    const data_copy = this.memory.copy(data);
+    p.setData(data_copy);
     return p_addr;
   }
 
   public act_read(p_addr: PromiseRef): boolean {
     const buffer = this.memory.getChild(this.addr, 0);
-    const read_channel = this.memory.getChild(this.addr, 1);
     const write_channel = this.memory.getChild(this.addr, 2);
 
     if (!bufferIsEmpty(this.memory, buffer)) {
@@ -66,7 +66,6 @@ export class Channel {
       p.setStatus(PromiseStatus.resolved);
       return true;
     } else {
-      addQueue(this.memory, read_channel, p_addr);
       return false;
     }
   }
@@ -117,14 +116,14 @@ export class Channel {
 
   public cancel_read(p_addr: PromiseRef): boolean {
     const read_channel = this.memory.getChild(this.addr, 1);
-    const node_addr = this.memory.getChildAddr(p_addr, 2);
+    const node_addr = this.memory.getChild(p_addr, 2);
     deleteQueue(this.memory, read_channel, node_addr);
     return true;
   }
 
   public cancel_write(p_addr: PromiseRef): boolean {
     const write_channel = this.memory.getChild(this.addr, 1);
-    const node_addr = this.memory.getChildAddr(p_addr, 2);
+    const node_addr = this.memory.getChild(p_addr, 2);
     deleteQueue(this.memory, write_channel, node_addr);
     return true;
   }

@@ -85,4 +85,13 @@ export class Heap extends MemoryRegion {
       this.setInt32(addr + 4, next);
     }
   }
+
+  public copy(addr: number): number {
+    const size = this.getInt32(addr - 4);
+    const newAddr = this.allocate(size);
+    for (let i = 0; i < size; i += 4) {
+      this.setInt32(newAddr + i, this.getInt32(addr + i));
+    }
+    return newAddr;
+  }
 }

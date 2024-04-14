@@ -11,6 +11,7 @@ describe('channel', () => {
     const c = new Channel(memory, c_addr);
 
     const data = memory.allocateNode(0, 4);
+    memory.setInt32(memory.getDataAddr(data), 1234);
 
     const r = c.read();
     const w = c.write(data);
@@ -28,7 +29,7 @@ describe('channel', () => {
 
     expect(pr.getStatus()).toBe(PromiseStatus.resolved);
     expect(pw.getStatus()).toBe(PromiseStatus.resolved);
-    expect(pr.getData()).toBe(data);
+    expect(memory.getInt32(memory.getDataAddr(data))).toBe(memory.getInt32(memory.getDataAddr(pr.getData())));
   });
 
   test('successfully block write and execute read from channel', () => {
@@ -38,6 +39,7 @@ describe('channel', () => {
     const c = new Channel(memory, c_addr);
 
     const data = memory.allocateNode(0, 4);
+    memory.setInt32(memory.getDataAddr(data), 1234);
 
     const r = c.read();
     const w = c.write(data);
@@ -55,7 +57,34 @@ describe('channel', () => {
 
     expect(pr.getStatus()).toBe(PromiseStatus.resolved);
     expect(pw.getStatus()).toBe(PromiseStatus.resolved);
-    expect(pr.getData()).toBe(data);
+    expect(memory.getInt32(memory.getDataAddr(data))).toBe(memory.getInt32(memory.getDataAddr(pr.getData())));
+  });
+
+  test('successfully save previous write data after being buffered in channel', () => {
+    const memory = new Arena(8, 1000);
+    const c_addr = Channel.create(memory, 1);
+
+    const c = new Channel(memory, c_addr);
+
+    const data = memory.allocateNode(0, 4);
+    memory.setInt32(memory.getDataAddr(data), 1234);
+
+    const r = c.read();
+    const w = c.write(data);
+
+    const pr = new PromiseT(r, memory);
+    const pw = new PromiseT(w, memory);
+    pw.act();
+
+    expect(pr.getStatus()).toBe(PromiseStatus.initialised);
+    expect(pw.getStatus()).toBe(PromiseStatus.resolved);
+  
+    memory.setInt32(memory.getDataAddr(data), 2345);
+
+    pr.act();
+
+    expect(pr.getStatus()).toBe(PromiseStatus.resolved);
+    expect(memory.getInt32(memory.getDataAddr(pr.getData()))).toBe(1234);
   });
 
   test('successfully writes with buffer capacity dont block', () => {
@@ -69,6 +98,11 @@ describe('channel', () => {
     const d2 = memory.allocateNode(0, 4);
     const d3 = memory.allocateNode(0, 4);
     const d4 = memory.allocateNode(0, 4);
+    memory.setInt32(memory.getDataAddr(d), 1234);
+    memory.setInt32(memory.getDataAddr(d1), 2347);
+    memory.setInt32(memory.getDataAddr(d2), 3456);
+    memory.setInt32(memory.getDataAddr(d3), 4567);
+    memory.setInt32(memory.getDataAddr(d4), 5678);
 
     const r = c.read();
     const r1 = c.read();
@@ -125,11 +159,11 @@ describe('channel', () => {
     expect(pr3.getStatus()).toBe(PromiseStatus.resolved);
     expect(pr4.getStatus()).toBe(PromiseStatus.resolved);
 
-    expect(pr.getData()).toBe(d);
-    expect(pr1.getData()).toBe(d1);
-    expect(pr2.getData()).toBe(d2);
-    expect(pr3.getData()).toBe(d3);
-    expect(pr4.getData()).toBe(d4);
+    expect(memory.getInt32(memory.getDataAddr(pr.getData()))).toBe(memory.getInt32(memory.getDataAddr(d)));
+    expect(memory.getInt32(memory.getDataAddr(pr1.getData()))).toBe(memory.getInt32(memory.getDataAddr(d1)));
+    expect(memory.getInt32(memory.getDataAddr(pr2.getData()))).toBe(memory.getInt32(memory.getDataAddr(d2)));
+    expect(memory.getInt32(memory.getDataAddr(pr3.getData()))).toBe(memory.getInt32(memory.getDataAddr(d3)));
+    expect(memory.getInt32(memory.getDataAddr(pr4.getData()))).toBe(memory.getInt32(memory.getDataAddr(d4)));
   });
 
   test('successfully writes with buffer capacity dont block', () => {
@@ -143,6 +177,11 @@ describe('channel', () => {
     const d2 = memory.allocateNode(0, 4);
     const d3 = memory.allocateNode(0, 4);
     const d4 = memory.allocateNode(0, 4);
+    memory.setInt32(memory.getDataAddr(d), 1234);
+    memory.setInt32(memory.getDataAddr(d1), 2347);
+    memory.setInt32(memory.getDataAddr(d2), 3456);
+    memory.setInt32(memory.getDataAddr(d3), 4567);
+    memory.setInt32(memory.getDataAddr(d4), 5678);
 
     const r = c.read();
     const r1 = c.read();
@@ -188,9 +227,9 @@ describe('channel', () => {
     expect(pr3.getStatus()).toBe(PromiseStatus.initialised);
     expect(pr4.getStatus()).toBe(PromiseStatus.initialised);
 
-    expect(pr.getData()).toBe(d);
-    expect(pr1.getData()).toBe(d1);
-    expect(pr2.getData()).toBe(d2);
+    expect(memory.getInt32(memory.getDataAddr(pr.getData()))).toBe(memory.getInt32(memory.getDataAddr(d)));
+    expect(memory.getInt32(memory.getDataAddr(pr1.getData()))).toBe(memory.getInt32(memory.getDataAddr(d1)));
+    expect(memory.getInt32(memory.getDataAddr(pr2.getData()))).toBe(memory.getInt32(memory.getDataAddr(d2)));
 
     pr3.rest();
     pr4.rest();
@@ -207,7 +246,7 @@ describe('channel', () => {
     expect(pw3.getStatus()).toBe(PromiseStatus.resolved);
     expect(pw4.getStatus()).toBe(PromiseStatus.resolved);
 
-    expect(pr3.getData()).toBe(d3);
-    expect(pr4.getData()).toBe(d4);
+    expect(memory.getInt32(memory.getDataAddr(pr3.getData()))).toBe(memory.getInt32(memory.getDataAddr(d3)));
+    expect(memory.getInt32(memory.getDataAddr(pr4.getData()))).toBe(memory.getInt32(memory.getDataAddr(d4)));
   });
 });
