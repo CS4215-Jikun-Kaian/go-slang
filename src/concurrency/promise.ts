@@ -1,8 +1,9 @@
 import { Arena } from '../memory/arena';
-import { ConstructTag, SelectListRef, PromiseStatus } from './types';
+import { ConstructTag, SelectRef, PromiseStatus } from './types';
 import { Mutex } from './mutex';
 import { Channel } from './channel';
-import {Waitgroup} from './waitgroup';
+import { Waitgroup } from './waitgroup';
+import { Select } from './select';
 
 /**
  * Difference between act and rest
@@ -30,7 +31,7 @@ export class PromiseT {
   }
 
   public static create(memory: Arena, construct: number, constructTag: ConstructTag): number {
-    const addr = memory.allocateNode(3, 6);
+    const addr = memory.allocateNode(4, 2);
     if (addr === -1) {
       return -1;
     }
@@ -54,6 +55,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_write(this.addr);
       case ConstructTag.waitgroup:
         return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).act(this.addr);
+        case ConstructTag.select:
+          return new Select(this.memory, this.memory.getChild(this.addr, 0)).act();
     }
     return false;
   }
@@ -68,6 +71,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).rest_write(this.addr);
       case ConstructTag.waitgroup:
         return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).rest(this.addr);
+      case ConstructTag.select:
+        return new Select(this.memory, this.memory.getChild(this.addr, 0)).rest();
     }
     return false;
   }
@@ -82,6 +87,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).cancel_write(this.addr);
       case ConstructTag.waitgroup:
         return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).cancel(this.addr);
+      case ConstructTag.select:
+        return new Select(this.memory, this.memory.getChild(this.addr, 0)).cancel();
     }
     return false;
   }
@@ -93,6 +100,13 @@ export class PromiseT {
   public setStatus(status: PromiseStatus): void {
     this.memory.setUint8(this.memory.getDataAddr(this.addr) + 1, status);
     // TODO: Add status change event
+
+    if (status === PromiseStatus.resolved) {
+      const select_addr = this.memory.getChild(this.addr, 3);
+      if (select_addr !== 0) {
+        new Select(this.memory, select_addr).fulfill();
+      }
+    }
   }
 
   public getData(): number {
@@ -103,7 +117,7 @@ export class PromiseT {
     this.memory.setChild(this.addr, 1, data);
   }
 
-  public setSelectList(selectList: SelectListRef): void {
-    this.memory.setChild(this.addr, 3, selectList);
+  public setSelect(select_addr: SelectRef): void {
+    this.memory.setChild(this.addr, 3, select_addr);
   }
 }
