@@ -1,0 +1,652 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parser tests parses chan.go correctly 1`] = `
+{
+  "declarations": [
+    {
+      "identifier": "ball",
+      "initializer": null,
+      "type": "Declaration",
+      "typeInfo": {
+        "elType": {
+          "length": undefined,
+          "size": -1,
+          "type": "string",
+        },
+        "size": 1,
+        "type": "channel",
+      },
+    },
+  ],
+  "functions": [
+    {
+      "body": {
+        "stmts": [
+          {
+            "block": {
+              "stmts": [
+                {
+                  "expr": {
+                    "expr": "Println",
+                    "op": {
+                      "exprs": [
+                        {
+                          "expr": "ball",
+                          "op": "<-",
+                          "type": "UnaryExpr",
+                        },
+                        ""kicked the ball."",
+                      ],
+                      "type": "Arguments",
+                    },
+                    "type": "PrimaryExprOp",
+                  },
+                  "type": "ExpressionStmt",
+                },
+                {
+                  "expr": {
+                    "expr": "Sleep",
+                    "op": {
+                      "exprs": [
+                        "Second",
+                      ],
+                      "type": "Arguments",
+                    },
+                    "type": "PrimaryExprOp",
+                  },
+                  "type": "ExpressionStmt",
+                },
+                {
+                  "channel": "ball",
+                  "expr": "playerName",
+                  "type": "SendStmt",
+                },
+              ],
+              "type": "Block",
+            },
+            "clause": {
+              "condition": null,
+              "init": null,
+              "post": null,
+              "type": "ForClause",
+            },
+            "type": "ForStmt",
+          },
+        ],
+        "type": "Block",
+      },
+      "identifier": "kickBall",
+      "type": "FunctionDecl",
+      "typeInfo": {
+        "paramTypes": [
+          {
+            "identifier": "playerName",
+            "type": {
+              "length": undefined,
+              "size": -1,
+              "type": "string",
+            },
+          },
+        ],
+        "returnTypes": [],
+        "size": -1,
+        "type": "function",
+      },
+    },
+    {
+      "body": {
+        "stmts": [
+          [
+            {
+              "left": "ball",
+              "right": {
+                "expr": "make",
+                "op": {
+                  "exprs": [
+                    {
+                      "elType": {
+                        "length": undefined,
+                        "size": -1,
+                        "type": "string",
+                      },
+                      "size": 1,
+                      "type": "channel",
+                    },
+                  ],
+                  "type": "Arguments",
+                },
+                "type": "PrimaryExprOp",
+              },
+              "type": "Assignment",
+            },
+          ],
+          {
+            "expr": {
+              "expr": "kickBall",
+              "op": {
+                "exprs": [
+                  ""John"",
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "GoStmt",
+          },
+          {
+            "expr": {
+              "expr": "kickBall",
+              "op": {
+                "exprs": [
+                  ""Alice"",
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "GoStmt",
+          },
+          {
+            "expr": {
+              "expr": "kickBall",
+              "op": {
+                "exprs": [
+                  ""Bob"",
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "GoStmt",
+          },
+          {
+            "expr": {
+              "expr": "kickBall",
+              "op": {
+                "exprs": [
+                  ""Emily"",
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "GoStmt",
+          },
+          {
+            "expr": {
+              "expr": "Sleep",
+              "op": {
+                "exprs": [
+                  {
+                    "left": "Second",
+                    "op": "*",
+                    "right": 2,
+                    "type": "BinaryExpr",
+                  },
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "ExpressionStmt",
+          },
+          {
+            "channel": "ball",
+            "expr": ""referee"",
+            "type": "SendStmt",
+          },
+          [
+            {
+              "identifier": "c",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "bool",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+          ],
+          {
+            "expr": {
+              "expr": "c",
+              "op": "<-",
+              "type": "UnaryExpr",
+            },
+            "type": "ExpressionStmt",
+          },
+        ],
+        "type": "Block",
+      },
+      "identifier": "Ch",
+      "type": "FunctionDecl",
+      "typeInfo": {
+        "paramTypes": [],
+        "returnTypes": [],
+        "size": -1,
+        "type": "function",
+      },
+    },
+  ],
+  "type": "SourceFile",
+}
+`;
+
+exports[`Parser tests parses select.go correctly 1`] = `
+{
+  "declarations": [],
+  "functions": [
+    {
+      "body": {
+        "stmts": [
+          [
+            {
+              "identifier": "a",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "length": 10,
+                "size": 10,
+                "type": "array",
+              },
+            },
+          ],
+          [
+            {
+              "identifier": "c",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+            {
+              "identifier": "c1",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+            {
+              "identifier": "c2",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+            {
+              "identifier": "c3",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+            {
+              "identifier": "c4",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+            {
+              "identifier": "c5",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "elType": {
+                  "size": 1,
+                  "type": "int",
+                },
+                "size": 1,
+                "type": "channel",
+              },
+            },
+          ],
+          [
+            {
+              "identifier": "i1",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "size": 1,
+                "type": "int",
+              },
+            },
+            {
+              "identifier": "i2",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "size": 1,
+                "type": "int",
+              },
+            },
+            {
+              "identifier": "i3",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "size": 1,
+                "type": "int",
+              },
+            },
+          ],
+          {
+            "clauses": [
+              {
+                "case": {
+                  "assignExpr": "i1",
+                  "recvExpr": {
+                    "expr": "c1",
+                    "op": "<-",
+                    "type": "UnaryExpr",
+                  },
+                  "type": "RecvStmt",
+                },
+                "stmts": [
+                  {
+                    "expr": {
+                      "expr": "print",
+                      "op": {
+                        "exprs": [
+                          ""received "",
+                          "i1",
+                          "" from c1\\n"",
+                        ],
+                        "type": "Arguments",
+                      },
+                      "type": "PrimaryExprOp",
+                    },
+                    "type": "ExpressionStmt",
+                  },
+                ],
+                "type": "SelectClause",
+              },
+              {
+                "case": {
+                  "channel": "c2",
+                  "expr": "i2",
+                  "type": "SendStmt",
+                },
+                "stmts": [
+                  {
+                    "expr": {
+                      "expr": "print",
+                      "op": {
+                        "exprs": [
+                          ""sent "",
+                          "i2",
+                          "" to c2\\n"",
+                        ],
+                        "type": "Arguments",
+                      },
+                      "type": "PrimaryExprOp",
+                    },
+                    "type": "ExpressionStmt",
+                  },
+                ],
+                "type": "SelectClause",
+              },
+              {
+                "case": {
+                  "assignExpr": "i3",
+                  "recvExpr": {
+                    "expr": {
+                      "expr": "c3",
+                      "op": "<-",
+                      "type": "UnaryExpr",
+                    },
+                    "type": "ParanthesizedExpr",
+                  },
+                  "type": "RecvStmt",
+                },
+                "stmts": [
+                  {
+                    "alternative": {
+                      "stmts": [
+                        {
+                          "expr": {
+                            "expr": "print",
+                            "op": {
+                              "exprs": [
+                                ""c3 is closed\\n"",
+                              ],
+                              "type": "Arguments",
+                            },
+                            "type": "PrimaryExprOp",
+                          },
+                          "type": "ExpressionStmt",
+                        },
+                      ],
+                      "type": "Block",
+                    },
+                    "condition": "ok",
+                    "consequent": {
+                      "stmts": [
+                        {
+                          "expr": {
+                            "expr": "print",
+                            "op": {
+                              "exprs": [
+                                ""received "",
+                                "i3",
+                                "" from c3\\n"",
+                              ],
+                              "type": "Arguments",
+                            },
+                            "type": "PrimaryExprOp",
+                          },
+                          "type": "ExpressionStmt",
+                        },
+                      ],
+                      "type": "Block",
+                    },
+                    "precedingStmt": null,
+                    "type": "IfStmt",
+                  },
+                ],
+                "type": "SelectClause",
+              },
+              {
+                "case": {
+                  "assignExpr": null,
+                  "recvExpr": {
+                    "expr": "c5",
+                    "op": "<-",
+                    "type": "UnaryExpr",
+                  },
+                  "type": "RecvStmt",
+                },
+                "stmts": [
+                  {
+                    "expr": {
+                      "expr": "print",
+                      "op": {
+                        "exprs": [
+                          ""received without an assignment"",
+                        ],
+                        "type": "Arguments",
+                      },
+                      "type": "PrimaryExprOp",
+                    },
+                    "type": "ExpressionStmt",
+                  },
+                ],
+                "type": "SelectClause",
+              },
+              {
+                "case": {
+                  "assignExpr": {
+                    "expr": "a",
+                    "op": {
+                      "expr": {
+                        "expr": "f",
+                        "op": {
+                          "exprs": [],
+                          "type": "Arguments",
+                        },
+                        "type": "PrimaryExprOp",
+                      },
+                      "type": "Index",
+                    },
+                    "type": "PrimaryExprOp",
+                  },
+                  "recvExpr": {
+                    "expr": "c4",
+                    "op": "<-",
+                    "type": "UnaryExpr",
+                  },
+                  "type": "RecvStmt",
+                },
+                "stmts": [],
+                "type": "SelectClause",
+              },
+              {
+                "case": "default",
+                "stmts": [
+                  {
+                    "expr": {
+                      "expr": "print",
+                      "op": {
+                        "exprs": [
+                          ""no communication\\n"",
+                        ],
+                        "type": "Arguments",
+                      },
+                      "type": "PrimaryExprOp",
+                    },
+                    "type": "ExpressionStmt",
+                  },
+                ],
+                "type": "SelectClause",
+              },
+            ],
+            "type": "SelectStmt",
+          },
+          [
+            {
+              "identifier": "i",
+              "initializer": null,
+              "type": "Declaration",
+              "typeInfo": {
+                "size": 1,
+                "type": "int",
+              },
+            },
+          ],
+          {
+            "block": {
+              "stmts": [
+                {
+                  "clauses": [
+                    {
+                      "case": {
+                        "channel": "c",
+                        "expr": 0,
+                        "type": "SendStmt",
+                      },
+                      "stmts": [],
+                      "type": "SelectClause",
+                    },
+                    {
+                      "case": {
+                        "channel": "c",
+                        "expr": 1,
+                        "type": "SendStmt",
+                      },
+                      "stmts": [],
+                      "type": "SelectClause",
+                    },
+                    {
+                      "case": "default",
+                      "stmts": [],
+                      "type": "SelectClause",
+                    },
+                  ],
+                  "type": "SelectStmt",
+                },
+              ],
+              "type": "Block",
+            },
+            "clause": {
+              "condition": {
+                "left": "i",
+                "op": "<",
+                "right": 10,
+                "type": "BinaryExpr",
+              },
+              "init": [
+                {
+                  "left": "i",
+                  "right": 0,
+                  "type": "Assignment",
+                },
+              ],
+              "post": [
+                {
+                  "left": "i",
+                  "right": {
+                    "left": "i",
+                    "op": "+",
+                    "right": 1,
+                    "type": "BinaryExpr",
+                  },
+                  "type": "Assignment",
+                },
+              ],
+              "type": "ForClause",
+            },
+            "type": "ForStmt",
+          },
+        ],
+        "type": "Block",
+      },
+      "identifier": "Selects",
+      "type": "FunctionDecl",
+      "typeInfo": {
+        "paramTypes": [],
+        "returnTypes": [],
+        "size": -1,
+        "type": "function",
+      },
+    },
+  ],
+  "type": "SourceFile",
+}
+`;
