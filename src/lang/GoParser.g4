@@ -329,7 +329,7 @@ arrayType
     ;
 
 arrayLength
-    : expression
+    : integer
     ;
 
 elementType

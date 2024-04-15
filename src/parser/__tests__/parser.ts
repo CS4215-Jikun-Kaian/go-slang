@@ -1,49 +1,14 @@
 import { parse } from '../parser';
+import fs from 'fs';
+
+const SOURCE_FILES_DIR = 'src/parser/__tests__/sourceFiles/';
 
 describe('Parser tests', () => {
-  it('parses a Go program correctly', () => {
-    parse(
-      `package samples
-
-      type Devnull struct {}
-      
-      func noResult() {
-        return
-      }
-      
-      func simpleF() int {
-        return 2
-      }
-      
-      func complexF1() (re float64, im float64) {
-        return -7.0, -4.0
-      }
-      
-      func complexF2() (re float64, im float64) {
-        return complexF1()
-      }
-      
-      func complexF3() (re float64, im float64) {
-        re = 7.0
-        im = 4.0
-        return
-      }
-      
-      func (Devnull) writeLength(p []byte) (n int, _ error) {
-        n = len(p)
-        return
-      }
-      
-      func ReturnImported() {
-        var p []byte
-        var devnull Devnull
-        noResult() // +
-        simpleF() // + 
-        complexF1() // +
-        complexF2() // + but sort out with propogating multiRet
-        complexF3() // -
-        devnull.writeLength(p) // -
-      }`
-    );
+  fs.readdirSync(SOURCE_FILES_DIR).forEach((file) => {
+    const source = fs.readFileSync(SOURCE_FILES_DIR + file, { encoding: 'utf8' });
+    it('parses ' + file + ' correctly', () => {
+      const AST = parse(source);
+      expect(AST).toMatchSnapshot();
+    });
   });
 });

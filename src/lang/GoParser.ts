@@ -3652,7 +3652,7 @@ export class GoParser extends GoParserBase {
       this.enterOuterAlt(_localctx, 1);
       {
         this.state = 703;
-        this.expression(0);
+        this.integer();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -6265,7 +6265,7 @@ export class GoParser extends GoParserBase {
     '\x02\x02\u02BA\u02B7\x03\x02\x02\x02\u02BA\u02B8\x03\x02\x02\x02\u02BA' +
     '\u02B9\x03\x02\x02\x02\u02BB}\x03\x02\x02\x02\u02BC\u02BD\x07"\x02\x02' +
     '\u02BD\u02BE\x05\x80A\x02\u02BE\u02BF\x07#\x02\x02\u02BF\u02C0\x05\x82' +
-    'B\x02\u02C0\x7F\x03\x02\x02\x02\u02C1\u02C2\x05\x9AN\x02\u02C2\x81\x03' +
+    'B\x02\u02C0\x7F\x03\x02\x02\x02\u02C1\u02C2\x05\xA6T\x02\u02C2\x81\x03' +
     '\x02\x02\x02\u02C3\u02C4\x05v<\x02\u02C4\x83\x03\x02\x02\x02\u02C5\u02C6' +
     '\x07@\x02\x02\u02C6\u02C7\x05v<\x02\u02C7\x85\x03\x02\x02\x02\u02C8\u02C9' +
     '\x07\x06\x02\x02\u02C9\u02D2\x07 \x02\x02\u02CA\u02CD\x05\x8EH\x02\u02CB' +
@@ -9267,8 +9267,8 @@ export class ArrayTypeContext extends ParserRuleContext {
 }
 
 export class ArrayLengthContext extends ParserRuleContext {
-  public expression(): ExpressionContext {
-    return this.getRuleContext(0, ExpressionContext);
+  public integer(): IntegerContext {
+    return this.getRuleContext(0, IntegerContext);
   }
   constructor(parent: ParserRuleContext | undefined, invokingState: number) {
     super(parent, invokingState);
