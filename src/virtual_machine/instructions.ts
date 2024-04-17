@@ -1,6 +1,6 @@
 import { Instruction, Context } from './types';
 
-interface Machine {
+export interface Machine {
   LDC(instr: Instruction, ctx: Context): void;
   UNOP(instr: Instruction, ctx: Context): void;
   BINOP(instr: Instruction, ctx: Context): void;
