@@ -29,4 +29,7 @@ export interface Machine {
 
   // Takes promises on the OS and execute select onto it
   SELECT(instr: Instruction, ctx: Context): void;
+
+  // Spawns new goroutine at specified address
+  SPAWN(instr: Instruction, ctx: Context): void;
 }
