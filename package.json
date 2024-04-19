@@ -1,10 +1,19 @@
 {
+  "name": "go-slang",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "private": false,
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest",
     "antlr4ts-parser": "antlr4ts -visitor src/lang/GoParser.g4",
-    "antlr4ts-lexer": "antlr4ts -visitor src/lang/GoLexer.g4"
+    "antlr4ts-lexer": "antlr4ts -visitor src/lang/GoLexer.g4",
+    "build": "tsc --build"
   },
   "dependencies": {
     "antlr4": "^4.13.1-patch-1",
