@@ -42,12 +42,12 @@ export class Environment {
     return new_env;
   }
 
-  public getValue(position: number[]): number {
+  public getValue(position: [number, number]): number {
     const [frame, index] = position;
     return this.memory.getChild(this.getFrame(frame), index);
   }
 
-  public setValue(position: number[], value: number): void {
+  public setValue(position: [number, number], value: number): void {
     const [frame, index] = position;
     this.memory.setChild(this.getFrame(frame), index, value);
   }

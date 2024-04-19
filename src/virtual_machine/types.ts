@@ -2,7 +2,7 @@ import { Arena } from "../memory/arena";
 
 export type Context = {
   OS: any[];
-  E: any[];
+  E: number;
   PC: number;
   RTS: any[];
   heap: Arena;
@@ -15,7 +15,7 @@ export type Instruction = {
   addr: number;
   num: number;
   arity: number;
-  pos: number;
+  pos: [number, number];
 };
 
 export enum Tag {
@@ -27,13 +27,14 @@ export enum Tag {
   Undefined = 5,
   Blockframe = 6,
   Callframe = 7,
-  Closure = 8,
-  Frame = 9,
-  Environment = 10,
-  Pair = 11,
-  Builtin = 12,
-  String = 13,
-  channel = 14,
-  mutex = 15,
-  waitGroup = 16,
+  Loopframe = 8,
+  Closure = 9,
+  Frame = 10,
+  Environment = 11,
+  Pair = 12,
+  Builtin = 13,
+  String = 14,
+  channel = 15,
+  mutex = 16,
+  waitGroup = 17,
 }
