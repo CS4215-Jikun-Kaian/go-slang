@@ -12,6 +12,10 @@ export class Frame {
     return new Frame(memory, addr);
   }
 
+  static isFrame(memory: Arena, address: number): boolean {
+    return memory.getInt8(memory.getDataAddr(address)) === Tag.Frame;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;

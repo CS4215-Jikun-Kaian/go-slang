@@ -14,6 +14,10 @@ export class Loopframe {
     return new Loopframe(memory, addr);
   }
 
+  static isLoopframe(memory: Arena, address: number): boolean {
+    return memory.getInt8(memory.getDataAddr(address)) === Tag.Loopframe;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;

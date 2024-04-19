@@ -12,6 +12,10 @@ export class Blockframe {
     return new Blockframe(memory, addr);
   }
 
+  static isBlockframe(memory: Arena, address: number): boolean {
+    return memory.getInt8(memory.getDataAddr(address)) === Tag.Blockframe;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;

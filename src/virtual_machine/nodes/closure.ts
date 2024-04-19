@@ -14,6 +14,10 @@ export class Closure {
     return new Closure(memory, addr);
   }
 
+  static isClosure(memory: Arena, address: number): boolean {
+    return memory.getUint8(memory.getDataAddr(address)) === Tag.Closure;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;

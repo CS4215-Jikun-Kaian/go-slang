@@ -13,6 +13,10 @@ export class Callframe {
     return new Callframe(memory, addr);
   }
 
+  static isCallframe(memory: Arena, address: number): boolean {
+    return memory.getInt8(memory.getDataAddr(address)) === Tag.Callframe;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;

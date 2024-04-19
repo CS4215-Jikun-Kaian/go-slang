@@ -11,6 +11,10 @@ export class Environment {
     return new Environment(memory, addr);
   }
 
+  static isEnvironment(memory: Arena, address: number): boolean {
+    return memory.getInt8(memory.getDataAddr(address)) === Tag.Environment;
+  }
+
   constructor(memory: Arena, address: number) {
     this.memory = memory;
     this.address = address;
