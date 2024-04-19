@@ -41,4 +41,14 @@ export class Environment {
     this.memory.setChild(new_env.getAddress(), old_size, frame);
     return new_env;
   }
+
+  public getValue(position: number[]): number {
+    const [frame, index] = position;
+    return this.memory.getChild(this.getFrame(frame), index);
+  }
+
+  public setValue(position: number[], value: number): void {
+    const [frame, index] = position;
+    this.memory.setChild(this.getFrame(frame), index, value);
+  }
 }
