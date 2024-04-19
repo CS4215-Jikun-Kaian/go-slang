@@ -35,7 +35,7 @@ export type PrimaryExpr = Operand | PrimaryExprOp;
 
 export type Operand = Literal | string | ParanthesizedExpr;
 
-export type Literal = 'nil' | number | string;
+export type Literal = 'nil' | number | string | FunctionDecl;
 
 export interface ParanthesizedExpr extends BaseNode {
   type: 'ParanthesizedExpr';

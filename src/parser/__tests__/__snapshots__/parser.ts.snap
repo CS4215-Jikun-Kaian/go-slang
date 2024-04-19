@@ -235,6 +235,92 @@ exports[`Parser tests parses chan.go correctly 1`] = `
 }
 `;
 
+exports[`Parser tests parses functionLit.go correctly 1`] = `
+{
+  "declarations": [],
+  "functions": [
+    {
+      "body": {
+        "stmts": [
+          {
+            "expr": {
+              "expr": {
+                "body": {
+                  "stmts": [
+                    {
+                      "exprs": [
+                        {
+                          "left": "x",
+                          "op": "+",
+                          "right": "y",
+                          "type": "BinaryExpr",
+                        },
+                      ],
+                      "type": "ReturnStmt",
+                    },
+                  ],
+                  "type": "Block",
+                },
+                "identifier": "",
+                "type": "FunctionDecl",
+                "typeInfo": {
+                  "paramTypes": [
+                    {
+                      "identifier": "x",
+                      "type": {
+                        "size": 1,
+                        "type": "int",
+                      },
+                    },
+                    {
+                      "identifier": "y",
+                      "type": {
+                        "size": 1,
+                        "type": "int",
+                      },
+                    },
+                  ],
+                  "returnTypes": [
+                    {
+                      "identifier": undefined,
+                      "type": {
+                        "size": 1,
+                        "type": "int",
+                      },
+                    },
+                  ],
+                  "size": -1,
+                  "type": "function",
+                },
+              },
+              "op": {
+                "exprs": [
+                  1,
+                  2,
+                ],
+                "type": "Arguments",
+              },
+              "type": "PrimaryExprOp",
+            },
+            "type": "GoStmt",
+          },
+        ],
+        "type": "Block",
+      },
+      "identifier": "main",
+      "type": "FunctionDecl",
+      "typeInfo": {
+        "paramTypes": [],
+        "returnTypes": [],
+        "size": -1,
+        "type": "function",
+      },
+    },
+  ],
+  "type": "SourceFile",
+}
+`;
+
 exports[`Parser tests parses select.go correctly 1`] = `
 {
   "declarations": [],

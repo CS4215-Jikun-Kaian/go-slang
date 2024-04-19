@@ -765,6 +765,9 @@ export class ASTBuilder implements GoParserVisitor<any> {
     const basicLitCtx = ctx.basicLit();
     if (basicLitCtx) return this.visitBasicLit(basicLitCtx);
 
+    const functionLitCtx = ctx.functionLit();
+    if (functionLitCtx) return this.visitFunctionLit(functionLitCtx);
+
     throw new Error('Method not implemented.');
   }
 
@@ -861,8 +864,13 @@ export class ASTBuilder implements GoParserVisitor<any> {
     throw new Error('Method not implemented.');
   }
 
-  visitFunctionLit(ctx: FunctionLitContext) {
-    throw new Error('Method not implemented.');
+  visitFunctionLit(ctx: FunctionLitContext): FunctionDecl {
+    return {
+      type: 'FunctionDecl',
+      identifier: '',
+      typeInfo: this.visitSignature(ctx.signature()),
+      body: this.visitBlock(ctx.block()),
+    };
   }
 
   visitIndex(ctx: IndexContext): Index {
