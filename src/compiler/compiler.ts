@@ -183,11 +183,11 @@ class Compiler {
   }
 
   private compileBreakStmt(breakStmt: Token.BreakStmt): void {
-    // todo - HJ
+    // todo
   }
 
   private compileContinueStmt(continueStmt: Token.ContinueStmt): void {
-    // todo - HJ
+    // todo
   }
 
   private compileIfStmt(ifStmt: Token.IfStmt): void {

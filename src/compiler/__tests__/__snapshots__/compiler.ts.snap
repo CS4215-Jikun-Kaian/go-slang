@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Compiler tests compiles simple.go correctly 1`] = `
+[
+  {
+    "addr": 9,
+    "type": "JOF",
+  },
+  {
+    "num": 0,
+    "type": "ENTER_SCOPE",
+  },
+  {
+    "num": 0,
+    "type": "ENTER_SCOPE",
+  },
+  {
+    "type": "LDC",
+    "val": 1,
+  },
+  {
+    "type": "LDC",
+    "val": 1,
+  },
+  {
+    "sym": "+",
+    "type": "BINOP",
+  },
+  {
+    "type": "POP",
+  },
+  {
+    "type": "EXIT_SCOPE",
+  },
+  {
+    "type": "EXIT_SCOPE",
+  },
+  {
+    "addr": 1,
+    "arity": 0,
+    "type": "LDF",
+  },
+  {
+    "pos": [
+      0,
+      0,
+    ],
+    "type": "ASSIGN",
+  },
+  {
+    "pos": [
+      0,
+      0,
+    ],
+    "type": "LD",
+  },
+  {
+    "arity": 0,
+    "type": "CALL",
+  },
+  {
+    "type": "DONE",
+  },
+]
+`;

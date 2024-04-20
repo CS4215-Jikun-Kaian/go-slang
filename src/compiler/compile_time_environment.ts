@@ -27,7 +27,7 @@ export class CompileTimeEnvironment {
       let frame = this.frames[frameIndex];
       for (let valueIndex = frame.length - 1; valueIndex >= 0; valueIndex--) {
         let value = frame[valueIndex];
-        if (value === 'name') return [frameIndex, valueIndex];
+        if (value === name) return [frameIndex, valueIndex];
       }
     }
     throw new Error(`Variable ${name} not declared`);

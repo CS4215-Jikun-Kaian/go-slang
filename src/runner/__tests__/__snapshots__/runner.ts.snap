@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Runner tests runs simple.go correctly 1`] = `
+"JOF {"addr":9}
+ENTER_SCOPE {"num":0}
+ENTER_SCOPE {"num":0}
+LDC {"val":1}
+LDC {"val":1}
+BINOP {"sym":"+"}
+POP
+EXIT_SCOPE
+EXIT_SCOPE
+LDF {"arity":0,"addr":1}
+ASSIGN {"pos":[0,0]}
+LD {"pos":[0,0]}
+CALL {"arity":0}
+DONE"
+`;
