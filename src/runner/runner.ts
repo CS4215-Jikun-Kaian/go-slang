@@ -7,7 +7,7 @@ export const run = async (code: string): Promise<string> => {
       const ast = parse(code);
       const instructions = compile(ast);
       // TODO: run
-      resolve(
+      console.log(
         instructions
           .map((i) => {
             const { type, ...others } = i;
@@ -15,6 +15,7 @@ export const run = async (code: string): Promise<string> => {
           })
           .join('\n')
       );
+      resolve('');
     } catch (err) {
       reject(err);
     }
