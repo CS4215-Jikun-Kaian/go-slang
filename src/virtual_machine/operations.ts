@@ -3,7 +3,7 @@ import { Tag, Instruction, Context } from './types';
 import { push, peek, word_to_string, heap_get_tag } from './utils';
 import { Channel } from '../concurrency/channel';
 import { Arena } from '../memory/arena';
-import { error } from './nodes/builtin_fn';
+import { error, isBuiltin } from './nodes/builtin_fn';
 import {
   isBoolean,
   isNumber,

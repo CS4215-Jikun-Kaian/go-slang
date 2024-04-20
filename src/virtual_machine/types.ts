@@ -10,12 +10,12 @@ export type Context = {
 
 export type Instruction = {
   type: string;
-  val: any;
-  sym: string;
-  addr: number;
-  num: number;
-  arity: number;
-  pos: [number, number];
+  val?: any;
+  sym?: string;
+  addr?: number;
+  num?: number;
+  arity?: number;
+  pos?: [number, number];
 };
 
 export enum Tag {

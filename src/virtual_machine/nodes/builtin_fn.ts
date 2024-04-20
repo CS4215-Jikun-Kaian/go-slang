@@ -19,4 +19,4 @@ export const builtin_implementation = {
 
 export const isBuiltin = (memory: Arena, address: number) => heap_get_tag(memory, address) === Tag.Builtin;
 
-export const apply_builtin = (memory: Arena, ctx: Context, fun: number) => {};
+export const applyBuiltin = (memory: Arena, ctx: Context, fun: number) => {};
