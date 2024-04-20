@@ -1,12 +1,17 @@
 {
   "name": "go-slang",
+  "description": "golang in Typescript",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "commonjs",
   "files": [
     "dist"
   ],
-  "repository": "git@github.com:CS4215-Jikun-Kaian/go-slang.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/CS4215-Jikun-Kaian/go-slang.git"
+  },
   "private": false,
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
