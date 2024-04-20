@@ -5,7 +5,7 @@ export class Closure {
   public memory: Arena;
   public address: number;
 
-  static allocate(memory: Arena, arity:number, env: number, pc: number): Closure {
+  static allocate(memory: Arena, arity: number, env: number, pc: number): Closure {
     const addr = memory.allocateNode(1, 6);
     memory.setInt8(memory.getDataAddr(addr), Tag.Closure);
     memory.setUint32(memory.getDataAddr(addr) + 1, pc);
@@ -38,6 +38,4 @@ export class Closure {
   public getArity(): number {
     return this.memory.getUint8(this.memory.getDataAddr(this.address) + 5);
   }
-
 }
-

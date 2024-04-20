@@ -1,6 +1,6 @@
-import { Arena } from "../../memory/arena";
-import { Tag } from "../types";
-import { heap_get_tag } from "../utils";
+import { Arena } from '../../memory/arena';
+import { Tag } from '../types';
+import { heap_get_tag } from '../utils';
 
 export let False: number;
 export const isFalse = (memory: Arena, address: number) => heap_get_tag(memory, address) === Tag.False;
@@ -24,7 +24,7 @@ export const isString = (memory: Arena, address: number) => heap_get_tag(memory,
 
 export const isPair = (memory: Arena, address: number) => heap_get_tag(memory, address) === Tag.Pair;
 
-export const allocate_literal_values = (memory: Arena, ) => {
+export const allocate_literal_values = (memory: Arena) => {
   False = memory.allocateNode(0, 1);
   memory.setInt8(False, Tag.False);
   True = memory.allocateNode(0, 1);
@@ -36,4 +36,3 @@ export const allocate_literal_values = (memory: Arena, ) => {
   Undefined = memory.allocateNode(0, 1);
   memory.setInt8(False, Tag.Undefined);
 };
-

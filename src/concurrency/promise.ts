@@ -55,8 +55,8 @@ export class PromiseT {
         return new Channel(this.memory, this.memory.getChild(this.addr, 0)).act_write(this.addr);
       case ConstructTag.waitgroup:
         return new Waitgroup(this.memory, this.memory.getChild(this.addr, 0)).act(this.addr);
-        case ConstructTag.select:
-          return new Select(this.memory, this.memory.getChild(this.addr, 0)).act();
+      case ConstructTag.select:
+        return new Select(this.memory, this.memory.getChild(this.addr, 0)).act();
     }
     return false;
   }

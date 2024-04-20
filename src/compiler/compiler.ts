@@ -16,8 +16,8 @@ class Compiler {
 
   private compileToken(token: Token.BaseNode | string | number | Token.BaseNode[] | TypeInfo): void {
     if (typeof token === 'string') {
-        const pos = this.compileTimeEnvironment.findVariable(token);
-        this.instructions.push({ type: 'LD', pos });
+      const pos = this.compileTimeEnvironment.findVariable(token);
+      this.instructions.push({ type: 'LD', pos });
       return;
     } else if (typeof token === 'number') {
       this.compileNumber(token);

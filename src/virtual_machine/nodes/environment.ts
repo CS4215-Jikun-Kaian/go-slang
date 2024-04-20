@@ -34,7 +34,7 @@ export class Environment {
 
   public extend(frame: number): Environment {
     const old_size = this.memory.getNumberofChildren(this.address);
-    const new_env = Environment.allocate(this.memory, old_size+1);
+    const new_env = Environment.allocate(this.memory, old_size + 1);
     for (let i = 0; i < old_size; i++) {
       this.memory.setChild(new_env.getAddress(), i, this.getFrame(i));
     }

@@ -1,6 +1,6 @@
 import { Instruction, Context } from './types';
 import { push } from './utils';
-import { Machine } from './instructions'
+import { Machine } from './instructions';
 import { JS_value_to_address, address_to_JS_value, isBuiltin } from './operations';
 import { error } from './nodes/builtin_fn';
 import { Arena } from '../memory/arena';
@@ -15,8 +15,7 @@ import { apply_unop, apply_binop } from './operations';
 import { Closure } from './nodes/closure';
 
 export class RuntimeMachine implements Machine {
-
-  static memory : Arena;
+  static memory: Arena;
 
   LDC(instr: Instruction, ctx: Context): void {
     push(ctx.OS, JS_value_to_address(RuntimeMachine.memory, instr.val));
@@ -53,7 +52,7 @@ export class RuntimeMachine implements Machine {
   }
 
   EXIT_SCOPE(instr: Instruction, ctx: Context): void {
-    const blockframe = new Blockframe(RuntimeMachine.memory, ctx.RTS.pop())
+    const blockframe = new Blockframe(RuntimeMachine.memory, ctx.RTS.pop());
     ctx.E = blockframe.getEnv();
   }
 

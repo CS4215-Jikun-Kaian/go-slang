@@ -4,7 +4,6 @@ export type ChannelRef = number;
 export type WaitgroupRef = number;
 export type SelectRef = number;
 
-
 export enum PromiseStatus {
   initialised = 0,
   rest = 1,

@@ -35,7 +35,6 @@ describe('circular buffer', () => {
     expect(() => {
       bufferDequeue(memory, buffer);
     }).toThrow();
-
   });
 
   test('successfully enqueue to full and dequeue to empty circular buffer in FIFO', () => {
@@ -88,5 +87,4 @@ describe('circular buffer', () => {
     expect(bufferDequeue(memory, buffer)).toBe(d4);
     expect(bufferIsEmpty(memory, buffer)).toBe(true);
   });
-
 });

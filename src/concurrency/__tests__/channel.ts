@@ -78,7 +78,7 @@ describe('channel', () => {
 
     expect(pr.getStatus()).toBe(PromiseStatus.initialised);
     expect(pw.getStatus()).toBe(PromiseStatus.resolved);
-  
+
     memory.setInt32(memory.getDataAddr(data), 2345);
 
     pr.act();

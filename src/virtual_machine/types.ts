@@ -1,4 +1,4 @@
-import { Arena } from "../memory/arena";
+import { Arena } from '../memory/arena';
 
 export type Context = {
   OS: any[];

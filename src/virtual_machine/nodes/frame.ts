@@ -2,7 +2,6 @@ import { Arena } from '../../memory/arena';
 import { Tag } from '../types';
 
 export class Frame {
-
   public memory: Arena;
   public address: number;
 

@@ -1,8 +1,4 @@
-
-
-
 export class MemoryRegion {
-
   private readonly dataView: DataView;
   protected readonly size: number;
 
@@ -106,4 +102,3 @@ export class MemoryRegion {
     }
   }
 }
-

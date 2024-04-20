@@ -20,7 +20,8 @@
     "antlr4ts-parser": "antlr4ts -visitor src/lang/GoParser.g4",
     "antlr4ts-lexer": "antlr4ts -visitor src/lang/GoLexer.g4",
     "build": "tsc --build",
-    "prepare": "yarn run build"
+    "prepare": "npm run build",
+    "format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "antlr4": "^4.13.1-patch-1",
